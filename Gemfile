@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 ruby '2.0.0'
-#ruby-gemset=wmrecc
+#ruby-gemset=timeshift
 
 gem 'rails', '4.0.5'
 gem 'american_date'
@@ -28,6 +28,7 @@ gem 'squeel' # better ActiveRecord SQL
 gem 'jquery-datatables-rails'
 gem 'lodash-rails'
 gem "default_value_for"
+gem 'better_errors'
 
 # so many cache errors in sass 3.3!
 gem 'sass', '3.2.13'

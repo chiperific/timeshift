@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Timekeeper | <%= @title %></title>
+  <title>TimeShift | <%= @title %></title>
   <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
   <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
   <%= csrf_meta_tags %>
@@ -15,8 +15,12 @@
   <div class="container-fluid" id="top-level-container" name="data-no-turbolink">
     <div class="row page-header" id="app-header">
       <a href="/" id="logo-home-link">
-        <i class="col-xs-4 col-md-2"><%= image_tag('WMRECC_Logo.png', { id: "logo"}) %></i>
-        <h2 class="col-xs-8 col-md-8">The Refugee Center Timekeeper</h2>
+        <i class="col-xs-4 col-md-2"><%= image_tag('color-scheme.png', { id: "logo"}) %></i>
+        <div class="col-xs-8 col-md-8">
+          <h1 class="jumbo-font">TimeShift</h1>
+          <h3>Space-age time tracking for all types of organizations.</h3>
+        </div>
+        
       </a>
     </div>
     <div class="row flasher">
@@ -28,11 +32,12 @@
     <%= yield %>
     
     <footer>
-      <hr />
-        <%= debug(params) if Rails.env.development? %>
-      <hr />
-      <span class="small">&copy 2014 The Refugee Center</span>
-      <span class="pull-right small">Created by <%= link_to 'Chiperific', "http://www.chiperific.com", target: 'blank' %></span>
+      <!--
+        <hr />
+          <%= debug(params) if Rails.env.development? %>
+        <hr />
+      -->
+      <span class="small">&copy 2014 <%= link_to 'Chiperific', "http://www.chiperific.com", target: 'blank' %> under the MIT License</span>
     </footer>
   </div>
 </body>

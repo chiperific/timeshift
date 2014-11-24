@@ -4,13 +4,14 @@
 //Medium devices Desktops (≥992px)  
 //Large devices Desktops (≥1200px)
 
-
 html {
   overflow-y: scroll;
+  background-color: #F6F7EC;
 }
 
 body {
   padding-top: 1em;
+  background-color: #F6F7EC !important;
 }
 
 section {
@@ -23,8 +24,12 @@ textarea {
 
 h1, h2, h3, h4, h5, h6, p {
   line-height: 1;
+  font-family: 'Voltaire', sans-serif !important;
 }
 
+.jumbo-font {
+  font-size: 72px !important;
+}
 
 #top-level-container {
   margin-left: 1em;
@@ -131,8 +136,9 @@ a[class*="btn-"]:visited {
   color: #333333;
 }
 
-.logo {
-  height: inherit;
+#logo {
+  //height: inherit;
+  width: 250px;
 }
 
 // app-like box styling
@@ -162,7 +168,6 @@ a[class*="btn-"]:visited {
   a:hover {
     text-decoration: none;
     .box-btn {
-      background-color: #dff0d8 !important;
     }
   }
   a:visited {
@@ -278,7 +283,6 @@ div.input-group {
 }
 
 .readonly-disguiser {
-  background-color: white !important;
   cursor: pointer !important;
 }
 
