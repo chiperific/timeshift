@@ -41,6 +41,10 @@ PayPeriod.create!([
   { period_type: "Bi-weekly", app_default_id: 1}
 ])
 
+ItEmail.create!([
+  { email: "it_dept@company.com", app_default_id: 1}
+])
+
 Holiday.create!([
   { name: "New Year's Day", month: 1, day: 1 },
   { floating: true, name: "M.L. King Jr. Day", month: 1, float_week: 3, float_day: 1 },
