@@ -2,7 +2,6 @@
 
 # _year_payweek_searchbar
 jQuery ->
-  #if $.inArray("timeoff", pathAry) >= 0 || $.inArray("payroll", pathAry) >= 0
   $('#searchbar-calculator-year').datepicker
     format: 'yyyy'
     minViewMode: 2

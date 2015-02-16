@@ -11,7 +11,7 @@
       <p>Start date:</p>
       <div class="input-group">
         <span class="input-group-addon"><%= icon('calendar') %></span>
-        <%= t_form.text_field :start_date, { class: "form-control width-limiter #{if action_name != "edit" then "date_picker readonly-shower" end}", value: @start_date, readonly: true } %>
+        <%= t_form.text_field :start_date, { class: "form-control width-limiter #{if action_name != "edit" then "date_picker readonly-shower" end}", value: @start_date, readonly: true, id: "form_start_date" } %>
       </div>
     </div>
 
@@ -19,7 +19,7 @@
       <p>End date:</p>
       <div class="input-group">
         <span class="input-group-addon"><%= icon('calendar') %></span>
-        <%= t_form.text_field :end_date, { class: "form-control width-limiter #{if action_name != "edit" then "date_picker readonly-shower" end}", value: @end_date, readonly: true } %>
+        <%= t_form.text_field :end_date, { class: "form-control width-limiter #{if action_name != "edit" then "date_picker readonly-shower" end}", value: @end_date, readonly: true, id: "form_end_date" } %>
       </div>
     </div>
   </div>

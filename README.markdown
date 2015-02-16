@@ -16,7 +16,7 @@
 ### For WMRECC:
 - Timeoff views: include accruals
 - Timesheet SV and Admin - remove approved timesheets (for archive)
-- No messagebox on homepage?
-- Test all buttons from "Manage your staff" onward.
+- Messagebox on homepage - no denied timesheets?
+- Test all buttons from "Manage all timesheets" onward.
 - Run the test suite
 - Create the Category-by-user-hour view in payroll

@@ -39,12 +39,7 @@ jQuery ->
 
   $('#users-table').dataTable
     ordering: false
-    columnDefs: [
-      targets: [0, -1, -2], searchable: false, orderable: false
-    ]
-
+    iDisplayLength: 50
+    
   $('#inactive-users-table').dataTable
     ordering: false
-    columnDefs: [
-      targets: [0, -1], searchable: false, orderable: false
-    ]

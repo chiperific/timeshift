@@ -12,7 +12,7 @@
 
 
 <div class="row buffered-row center">
-  <% if @timesheets_from_user_auth_needing_review %>
+  <% if @timesheets_from_user_auth_needing_review.any? %>
     <hr />
     <%= "Your staff have "+ @timesheets_from_user_auth_needing_review.count.to_s + " " + "timesheet".pluralize(@timesheets_from_user_auth_needing_review.count) + " for review." %>
     <%= link_to "Review now", user_timesheets_supervisor_path(current_user), { method: :get, class: "btn btn-success"} %>
