@@ -28,7 +28,6 @@ gem 'squeel' # better ActiveRecord SQL
 gem 'jquery-datatables-rails'
 gem 'lodash-rails'
 gem "default_value_for"
-gem 'better_errors'
 
 # so many cache errors in sass 3.3!
 gem 'sass', '3.2.13'
@@ -48,6 +47,9 @@ group :development, :test do
   gem 'childprocess', '0.3.6'
 
   gem 'seed_dump'
+
+  gem 'better_errors'
+  gem 'binding_of_caller'
 end
 
 group :development do

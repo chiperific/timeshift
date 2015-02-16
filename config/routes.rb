@@ -6,7 +6,6 @@ WmreccTimesheet::Application.routes.draw do
 
   get '/holidays/:year', to: 'app_default#holidays'
 
-
   match 'configure_update', to: 'static_pages#configure_update', via: 'patch'
 
   match '/signin', to: 'static_pages#create',       via: 'post'

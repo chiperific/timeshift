@@ -4,14 +4,25 @@
 //Medium devices Desktops (≥992px)  
 //Large devices Desktops (≥1200px)
 
+//COLOR SCHEME (in Hex colors):
+// Beige:     #F4F5E7
+// Grey-blue: #87A7CE
+// Grey:      #718CA0
+// Lt blue:   #BDCFE4
+// Orange:    #F89F15
+// Purple:    #484C8B
+
 html {
   overflow-y: scroll;
-  background-color: #F6F7EC;
 }
 
 body {
   padding-top: 1em;
-  background-color: #F6F7EC !important;
+}
+
+.lt-blue-bg {
+  background-color: #BDCFE4;
+  border-radius: 6px;
 }
 
 section {
@@ -38,6 +49,19 @@ h1, h2, h3, h4, h5, h6, p {
 
 .hidden {
   display: none;
+}
+
+// make editable fields look read-only
+.readonly-disguiser {
+  background-color: #eeeeee;
+  opacity: 1;
+  cursor: not-allowed;
+}
+
+// make readonly fields that not look readonly
+.readonly-shower {
+  background-color: white !important;
+  cursor: default !important;
 }
 
 .align-right {
@@ -149,6 +173,7 @@ a[class*="btn-"]:visited {
 
 .box-btn {
   text-align: center;
+  background-color: #F4F5E7;
   width: 6em;
   height: 6em;
   margin-top: .5em;
@@ -280,10 +305,6 @@ div.input-group {
 
 .plus-r-padding {
   padding-right: 10px;
-}
-
-.readonly-disguiser {
-  cursor: pointer !important;
 }
 
 .min-padding-both {

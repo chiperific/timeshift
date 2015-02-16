@@ -23,7 +23,7 @@
           <%= 'You have ' + @denied_timeoffs.count.to_s + ' denied timeoff ' + 'request'.pluralize(@denied_timeoffs.count) + '.' %>
         </p>
         <a href='<%= user_timeoff_single_path(current_user) %>' >
-          <div class="box-btn readonly-disguiser">
+          <div class="box-btn">
             <%= icon('minus-square-o fa-3x') %>
             <p>Your timeoff</p>
           </div>
@@ -37,7 +37,7 @@
           <%= 'You have ' + @denied_timesheets.count.to_s + ' denied ' 'timesheet'.pluralize(@denied_timesheets.count) + '.' %>
         </p>
         <a href='<%= user_timesheets_single_path(current_user) %>' >
-          <div class="box-btn readonly-disguiser">
+          <div class="box-btn">
             <%= icon('clock-o fa-3x') %>
             <p>Your timesheets</p>
           </div>
@@ -51,7 +51,7 @@
           <%= 'You have ' + @unapproved_timeoffs.count.to_s + ' timeoff ' + 'request'.pluralize(@unapproved_timeoffs.count) + ' to review.' %>
         </p>
         <a href='<%= user_timeoff_supervisor_path(current_user) %>' >
-          <div class="box-btn readonly-disguiser">
+          <div class="box-btn">
             <%= icon('check-square-o fa-3x') %>
             <p>Your staff's timeoff</p>
           </div>
@@ -65,7 +65,7 @@
           <%= 'You have ' + @unapproved_timesheets.count.to_s + ' ' + 'timesheet'.pluralize(@unapproved_timesheets.count) + ' to review.' %>
         </p>
         <a href="<%= user_timesheets_supervisor_path(current_user) %>" >
-          <div class="box-btn readonly-disguiser">
+          <div class="box-btn">
             <%= icon('thumbs-o-up fa-3x') %>
             <p>Your staff's timesheets</p>
           </div>
@@ -92,7 +92,7 @@
   </a>
 
   <a href='<%= user_timeoff_single_path(current_user) %>' class="<%= @col_width %>">
-    <div class="box-btn readonly-disguiser">
+    <div class="box-btn">
       <%= icon('minus-square-o fa-3x') %>
       <p>Your timeoff</p>
     </div>

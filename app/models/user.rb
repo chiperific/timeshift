@@ -3,9 +3,7 @@ class User < ActiveRecord::Base
 
   belongs_to :department 
   has_many :categories, through: :department
-  has_many :timesheet_hours
-  has_many :timesheet_categories
-  has_many :timesheets, through: :timesheet_hours
+  has_many :timesheets
 
   before_save { self.email = email.downcase }
   before_create :create_remember_token

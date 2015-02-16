@@ -12,14 +12,14 @@ class StaticPagesController < ApplicationController
     @msg_col_width = "col-xs-6 col-sm-3"
 
     if current_user
-      @denied_timesheets  = current_user.timesheet_hours.where(approved: nil).where.not(reviewed: nil).map { |th| th.timesheet_id }.uniq
-      @denied_timeoffs    = current_user.timesheet_hours.where(timeoff_approved: nil).where.not(timeoff_reviewed: nil).map { |th| th.timesheet_id }.uniq
+      @denied_hours = current_user.timesheets.where(hours_approved: nil).where.not(hours_reviewed: nil)
+      @denied_timeoffs = current_user.timesheets.where(timeoff_approved: nil).where.not(timeoff_reviewed: nil)
 
       if current_user.has_authority_over.any?
         @user_auth_id_ary = current_user.has_authority_over.pluck(:id)
 
-        @unapproved_timesheets  = TimesheetHour.where(user_id: @user_auth_id_ary, approved: nil, reviewed: nil).map { |th| th.timesheet_id }.uniq
-        @unapproved_timeoffs    = TimesheetHour.where(user_id: @user_auth_id_ary, timeoff_approved: nil, timeoff_reviewed: nil).map { |th| th.timesheet_id }.uniq
+        @unapproved_timesheets  = Timesheet.where(user_id: @user_auth_id_ary, hours_approved: nil, hours_reviewed: nil)
+        @unapproved_timeoffs    = Timesheet.where(user_id: @user_auth_id_ary, timeoff_approved: nil, timeoff_reviewed: nil)
       end
 
       if @denied_timeoffs.blank? && @denied_timesheets.blank? && @unapproved_timeoffs.blank? && @unapproved_timesheets.blank?

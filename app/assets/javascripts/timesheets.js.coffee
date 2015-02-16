@@ -1,7 +1,7 @@
 # make a date Ruby can handle
 weekday_name = (n) ->
   weekday = new Array(7)
-  weekday[0] =  "Sunday"
+  weekday[0] = "Sunday"
   weekday[1] = "Monday"
   weekday[2] = "Tuesday"
   weekday[3] = "Wednesday"
@@ -47,11 +47,10 @@ holiday_json = ->
 
 holiday_processor = ->
   $('#holiday_reminder').addClass('hidden')
-  mm_dd = $('input.week_num_to_date').val()
-  yyyy = $('input#timesheet_year').val()
-
-  visible_date = new Date(mm_dd+"/"+yyyy)
+  string_date = $('input.start_date').val()
+  visible_date = new Date(string_date)
   visible_day = visible_date.getDay()
+  year = visible_date.getYear()
   visible_day_of_month = visible_date.getDate()
   if visible_day == 0
     subtract_days = 6
@@ -67,17 +66,17 @@ holiday_processor = ->
   end_of_wk = new Date(last_date)
 
   $('span#end_of_range').html(end_of_wk)
-  $.ajax(url: '/holidays/'+yyyy, type: 'get', success: (data)->
+  $.ajax(url: '/holidays/'+year, type: 'get', success: (data)->
     $('span#holiday_ary').html(data)
     holiday_json()
   )
 
 jQuery ->
-  $("#week_num_to_date_field").css( "border", "2px solid #f0ad4e" )
-  $('#week_num_to_date_field').effect( "pulsate", {times:3}, 2000 )
+  #$("#start_date_field").css( "border", "2px solid #f0ad4e" )
+  #$('#start_date_field').effect( "pulsate", {times:3}, 2000 )
   holiday_processor()
 
-  $(document).on 'changeDate', '.week_num_to_date', ( ->
+  $(document).on 'changeDate', '.start_date', ( ->
     holiday_processor()
   ) 
 
@@ -180,21 +179,10 @@ jQuery ->
       targets: -1, sortable: false, searchable: false
     ]
 
-  #if $.inArray("new", pathAry) >= 0
-  $('.week_num_to_date').datepicker
+
+  $('.date_picker').datepicker
     todayBtn: "linked"
-    format: 'mm/dd'
+    format: 'yyyy/mm/dd'
     calendarWeeks: true
     weekStart: 1
-    autoclose: true
-
-  $('.week_num_to_date').change ->
-    new_mm_dd = $(this).val()
-    new_yy = $('#timesheet_year').val()
-    new_date = new_mm_dd + "/" + new_yy
-    $('#timesheet_week_num').val(new Date(new_date).getWeek())
-
-  $('.timesheet_year').datepicker
-    format: "yyyy"
-    minViewMode: 2
     autoclose: true

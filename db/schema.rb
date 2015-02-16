@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140617004130) do
+ActiveRecord::Schema.define(version: 20150215134320) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -75,7 +75,6 @@ ActiveRecord::Schema.define(version: 20140617004130) do
 
   create_table "timesheet_categories", force: true do |t|
     t.integer  "timesheet_id"
-    t.integer  "user_id"
     t.integer  "category_id"
     t.decimal  "hours",        precision: 4, scale: 2, default: 0.0
     t.datetime "created_at"
@@ -84,28 +83,28 @@ ActiveRecord::Schema.define(version: 20140617004130) do
 
   add_index "timesheet_categories", ["category_id"], name: "index_timesheet_categories_on_category", using: :btree
   add_index "timesheet_categories", ["timesheet_id"], name: "index_timesheet_categories_on_timesheet", using: :btree
-  add_index "timesheet_categories", ["user_id"], name: "index_timesheet_categories_on_user", using: :btree
 
   create_table "timesheet_hours", force: true do |t|
     t.integer  "timesheet_id"
-    t.integer  "user_id"
-    t.integer  "weekday"
-    t.decimal  "hours",            precision: 4, scale: 2, default: 0.0
-    t.datetime "reviewed"
-    t.datetime "approved"
-    t.decimal  "timeoff_hours",    precision: 4, scale: 2, default: 0.0
-    t.datetime "timeoff_reviewed"
-    t.datetime "timeoff_approved"
+    t.integer  "day_num"
+    t.decimal  "hours",         precision: 4, scale: 2, default: 0.0
+    t.decimal  "timeoff_hours", precision: 4, scale: 2, default: 0.0
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   add_index "timesheet_hours", ["timesheet_id"], name: "index_timesheet_hours_on_timesheet", using: :btree
-  add_index "timesheet_hours", ["user_id"], name: "index_timesheet_hours_on_user", using: :btree
 
   create_table "timesheets", force: true do |t|
-    t.integer "week_num"
-    t.integer "year"
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.integer  "user_id"
+    t.datetime "hours_approved"
+    t.datetime "timeoff_approved"
+    t.datetime "hours_reviewed"
+    t.datetime "timeoff_reviewed"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "users", force: true do |t|

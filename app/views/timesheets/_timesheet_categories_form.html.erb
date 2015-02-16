@@ -1,7 +1,6 @@
 
   <%= t_form.fields_for :timesheet_categories, @timesheet_categories do |tc_form| %>
     <%= tc_form.hidden_field :timesheet_id %>
-    <%= tc_form.hidden_field :user_id, { value: @user.id } %>
     <%= tc_form.hidden_field :category_id %>
     <span class="row form-group span-no-padding-both no-margin">
       <span class="col-xs-7">
