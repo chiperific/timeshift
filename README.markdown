@@ -9,8 +9,6 @@
 
 
 ### To do:
-- Make a logo
-- Switch out the WMRECC logo
 - Scaffold the favicons
 
 ### For WMRECC:

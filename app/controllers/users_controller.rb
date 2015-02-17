@@ -32,7 +32,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @user_staff = User.where(supervisor_id: @user.id)
     @users = User.all
-    @active_users = @users_staff.where(active: true).order(:lname, :fname)
+    @active_users = @user_staff.where(active: true).order(:lname, :fname)
     @inactive_users = @user_staff.where(active: false).order(:lname, :fname)
     @supervised_active_users = @user_staff.where(active: true).order(:lname, :fname)
     @departments = Department.where(active: true)
