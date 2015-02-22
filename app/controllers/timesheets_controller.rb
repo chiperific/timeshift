@@ -90,8 +90,14 @@ class TimesheetsController < ApplicationController
     @hours_ttl = 0.0
     @category_ttl = 0.0
 
-    @start_date = Date.commercial(Date.today.year, Date.today.cweek, 1).strftime("%Y/%m/%d")
-    @end_date = Date.commercial(Date.today.year, Date.today.cweek, 7).strftime("%Y/%m/%d")
+    start_date = Date.commercial(Date.today.year, Date.today.cweek, 1)
+    end_date = Date.commercial(Date.today.year, Date.today.cweek, 7)
+
+    @human_start_date = start_date.strftime("%m/%d/%Y")
+    @human_end_date = end_date.strftime("%m/%d/%Y")
+    
+    @ruby_start_date = start_date.strftime("%Y/%m/%d")
+    @ruby_end_date = end_date.strftime("%Y/%m/%d")
 
   end
 

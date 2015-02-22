@@ -70,6 +70,14 @@ class User < ActiveRecord::Base
     "#{self.fname} #{self.lname}"
   end
 
+  def end_date_string
+    if self.end_date.present?
+      self.end_date.strftime("%m/%d/%Y")
+    else
+      "present"
+    end
+  end
+
   ############ methods for _timeoff_calculator
   # turn 'mm-dd' and 'yyyy' into a date
   def date_from_period_year(period, year)

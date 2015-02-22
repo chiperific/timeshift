@@ -6,6 +6,7 @@
       <th class="hidden-xs">Dept.</th>
       <th>Supervisor</th>
       <th class="hidden-xs">Role</th>
+      <th class="hidden-xs">Dates</th>
       <th></th>
     </tr>
   </thead>
@@ -28,17 +29,33 @@
         <td>
           <%= if @supervisor != nil then @supervisor.full_name else "(none)" end %>
         </td>
-        <td class="hidden-xs"><%= if u.admin then "Admin" else "User" end %></td>
+        <td class="hidden-xs">
+          <%= if u.admin then "Admin" else "User" end %>
+        </td>
+        <td class="hidden-xs">
+          <%= u.start_date.strftime('%m/%d/%Y') + " - " + u.end_date_string %>
+        </td>
         <td><%= link_to FA_EDIT, edit_user_path(u.id), { method: :get, class: "btn btn-primary btn-sm"} %></td>
       </tr>
       <% @direct_reports.each do |s| %>
         <tr class=<%= "super-list-#{u.id.to_s}".to_s %> >
           <td class="hidden"></td>
-          <td class="hidden"><%= s.full_name %></td>
-          <td class="hidden hidden-xs"><%= s.department.present? ? s.department.name : "(none)" %></td>
+          <td class="hidden">
+            <%= s.full_name %>
+          </td>
+          <td class="hidden hidden-xs">
+            <%= s.department.present? ? s.department.name : "(none)" %>
+          </td>
           <td class="hidden"></td>
-          <td class="hidden hidden-xs"><%= if s.admin then "Admin" else "User" end %></td>
-          <td class="hidden"><%= link_to FA_EDIT, edit_user_path(s.id), { method: :get, class: "btn btn-primary btn-sm"} %></td>
+          <td class="hidden hidden-xs">
+            <%= if s.admin then "Admin" else "User" end %>
+          </td>
+          <td class="hidden hidden-xs">
+            <%= u.start_date.strftime('%m/%d/%Y') + " - " + u.end_date_string %>
+          </td>
+          <td class="hidden">
+            <%= link_to FA_EDIT, edit_user_path(s.id), { method: :get, class: "btn btn-primary btn-sm"} %>
+          </td>
         </tr>
       <% end %>
     <% end %>

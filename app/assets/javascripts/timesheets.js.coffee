@@ -10,6 +10,7 @@ weekday_name = (n) ->
   weekday[6] = "Saturday"
   weekday[n]
 
+#returns today's YYYY/MM/DD for reviewed and approved hidden fields
 rubyReadyDate = ->
   n = new Date()
   y = n.getFullYear()
@@ -46,8 +47,8 @@ holiday_json = ->
 
 
 holiday_processor = ->
-  $('#holiday_reminder').addClass('hidden')
-  string_date = $('input.start_date').val()
+  #$('#holiday_reminder').addClass('hidden')
+  string_date = $('input#ruby_start_date').val()
   visible_date = new Date(string_date)
   visible_day = visible_date.getDay()
   year = visible_date.getYear()
@@ -71,30 +72,34 @@ holiday_processor = ->
     holiday_json()
   )
 
+# handle the 4 date fields on the _timesheet_form partial
+dateSetter = -> 
+  startDateString = $("#form_start_date").val()
+  startDate = new Date(startDateString)
+  endDate = new Date(startDate)
+  endDate.setDate(startDate.getDate()+6)
 
+  startYear = startDate.getFullYear()
+  startMonth = ('0'+(startDate.getMonth()+1)).slice(-2)
+  startDay = ('0'+ startDate.getDate()).slice(-2)
+  startRubyString = startYear+"/"+startMonth+"/"+startDay
+
+  endYear = endDate.getFullYear()
+  endMonth = ('0'+(endDate.getMonth()+1)).slice(-2)
+  endDay = ('0'+ endDate.getDate()).slice(-2)
+  endHumanString = endMonth+"/"+endDay+"/"+endYear
+  endRubyString = endYear+"/"+endMonth+"/"+endDay
+
+  $("#form_end_date").val(endHumanString)
+  $("#ruby_end_date").val(endRubyString)
+  $("#ruby_start_date").val(startRubyString)
 
 jQuery ->
-  #$("#start_date_field").css( "border", "2px solid #f0ad4e" )
-  #$('#start_date_field').effect( "pulsate", {times:3}, 2000 )
   holiday_processor()
 
-  $(document).on 'changeDate', '.start_date', ( ->
-    holiday_processor()
-  )
-
-  # automatically increment the _timesheet_form end date
   $(document).on 'changeDate', '#form_start_date', ( ->
-    startString = $("#form_start_date").val()
-    startDate = new Date(startString)
-    endDate = new Date(startDate)
-    endDate.setDate(startDate.getDate()+6)
-
-    endYear = endDate.getFullYear()
-    endMonth = ('0'+(endDate.getMonth()+1)).slice(-2)
-    endDay = ('0'+ endDate.getDate()).slice(-2)
-    
-    endString = endYear+"/"+endMonth+"/"+endDay
-    $("#form_end_date").val(endString)
+    holiday_processor()
+    dateSetter()
   )
 
   $('#direct_report_chooser').click ->
@@ -198,8 +203,9 @@ jQuery ->
 
 
   $('.date_picker').datepicker
+    daysOfWeekDisabled: "0,2,3,4,5,6"
     todayBtn: "linked"
-    format: 'yyyy/mm/dd'
+    format: 'mm/dd/yyyy'
     calendarWeeks: true
     weekStart: 1
     autoclose: true
