@@ -13,7 +13,8 @@
         <span class="input-group-addon"><%= icon('calendar') %></span>
         <%= text_field_tag "start_field", @human_start_date, { class: "form-control width-limiter #{if action_name != "edit" then "date_picker readonly-shower" end}", readonly: true, id: "form_start_date" } %>
       </div>
-      <%= t_form.text_field :start_date, { value: @ruby_start_date, id: "ruby_start_date" } %>
+      <%= t_form.hidden_field :start_date, { value: @ruby_start_date, id: "ruby_start_date" } %>
+      <p id="date_warning" class="alert alert-warning width-limiter-14">Please select a Monday!</p>
     </div>
 
     <div class="col-xs-6">
@@ -22,15 +23,13 @@
         <span class="input-group-addon"><%= icon('calendar') %></span>
         <%= text_field_tag "end_field", @human_end_date, { class: "form-control width-limiter", readonly: true, id: "form_end_date" } %>
       </div>
-      <%= t_form.text_field :end_date, { value: @ruby_end_date, id: "ruby_end_date" } %>
+      <%= t_form.hidden_field :end_date, { value: @ruby_end_date, id: "ruby_end_date" } %>
     </div>
   </div>
 
   <div class="row alert alert-success well-striped well-adjusted" id="holiday_reminder" role="alert">
-    <span class="" id="start_of_range"></span>
-    <span class="" id="end_of_range"></span>
-    <span class="" id="holiday_ary"></span>
-    <h5>Heads up!</h5>
+    <span class="hidden" id="holiday_ary"></span>
+    <h3>Heads up!</h3>
     <ul class="list-unstyled" id="holidays_in_period"></ul>
   </div>
 

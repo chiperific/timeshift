@@ -1,15 +1,3 @@
-# make a date Ruby can handle
-weekday_name = (n) ->
-  weekday = new Array(7)
-  weekday[0] = "Sunday"
-  weekday[1] = "Monday"
-  weekday[2] = "Tuesday"
-  weekday[3] = "Wednesday"
-  weekday[4] = "Thursday"
-  weekday[5] = "Friday"
-  weekday[6] = "Saturday"
-  weekday[n]
-
 #returns today's YYYY/MM/DD for reviewed and approved hidden fields
 rubyReadyDate = ->
   n = new Date()
@@ -24,53 +12,6 @@ calculateTotal = (input, ttl_field) ->
     if !isNaN(this.value) && this.value.length != 0
       sum += parseFloat this.value
     $(ttl_field).html(sum)
-
-holiday_date_filter = (holiday) ->
-  string_date = holiday["date"]
-  string_date_w_time = string_date+" 12:00:00"
-  date = new Date(string_date_w_time)
-  formatted_date = weekday_name(date.getDay())+", "+(date.getMonth()+1)+"/"+(date.getDate())
-  name = "<li>"+holiday["name"]+" is "+formatted_date+"</li>"
-  first_string = $('#start_of_range').html()
-  first = new Date(first_string)
-  last_string = $('#end_of_range').html()
-  last = new Date(last_string)
-  if first <= date && date <= last
-    $('#holiday_reminder').removeClass('hidden')
-    $('#holidays_in_period').append(name)
-
-holiday_json = ->
-  $('#holidays_in_period').html("")
-  ary = $('#holiday_ary').html()
-  parsed = jQuery.parseJSON(ary)
-  holiday_date_filter holiday for holiday, i in parsed
-
-
-holiday_processor = ->
-  #$('#holiday_reminder').addClass('hidden')
-  string_date = $('input#ruby_start_date').val()
-  visible_date = new Date(string_date)
-  visible_day = visible_date.getDay()
-  year = visible_date.getYear()
-  visible_day_of_month = visible_date.getDate()
-  if visible_day == 0
-    subtract_days = 6
-  else
-    subtract_days = visible_day - 1
-  first_date = new Date(visible_date)
-  first_date.setDate(visible_day_of_month - subtract_days)
-  start_of_wk = new Date(first_date)
-  $('span#start_of_range').html(start_of_wk)
-  add_days = (visible_day_of_month - subtract_days) + 6
-  last_date = new Date(first_date)
-  last_date.setDate(add_days)
-  end_of_wk = new Date(last_date)
-
-  $('span#end_of_range').html(end_of_wk)
-  $.ajax(url: '/holidays/'+year, type: 'get', success: (data)->
-    $('span#holiday_ary').html(data)
-    holiday_json()
-  )
 
 # handle the 4 date fields on the _timesheet_form partial
 dateSetter = -> 
@@ -94,12 +35,60 @@ dateSetter = ->
   $("#ruby_end_date").val(endRubyString)
   $("#ruby_start_date").val(startRubyString)
 
+  if startDate.getDay() != 1
+    $('#date_warning').removeClass('hidden')
+  else
+    $('#date_warning').addClass('hidden')
+
+# Since JS doesn't know string names for days...
+weekday_name = (n) ->
+  day_name = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+  day_name[n]
+
+holiday_date_filter = (holiday) ->
+  string_date = holiday["date"]
+  string_date_w_time = string_date+" 12:00:00"
+  holiday_date = new Date(string_date_w_time)
+  formatted_date = weekday_name(holiday_date.getDay())+", "+(holiday_date.getMonth()+1)+"/"+(holiday_date.getDate())
+  list_item = "<li>"+holiday["name"]+" is "+formatted_date+"</li>"
+  start_string = $('input#ruby_start_date').val()
+  start = new Date(start_string)
+  end_string = $('input#ruby_end_date').val()
+  end = new Date(end_string)
+
+  if start <= holiday_date && holiday_date <= end
+    $('#holidays_in_period').append(list_item)
+
+holiday_json = ->
+  $('#holidays_in_period').html("")
+  ary = $('#holiday_ary').html()
+  parsed = jQuery.parseJSON(ary)
+  holiday_date_filter holiday for holiday, i in parsed
+
+  if $("#holidays_in_period li").length > 0
+    $('#holiday_reminder').removeClass('hidden')
+  else
+    $('#holiday_reminder').addClass('hidden')
+
+holiday_processor = ->
+  start_string = $('input#ruby_start_date').val()
+  end_string = $('input#ruby_end_date').val()
+  start_date = new Date(start_string)
+  end_date = new Date(end_string)
+
+  year = start_date.getFullYear()
+  $.ajax(url: '/holidays/'+year, type: 'get', success: (data)->
+    $('span#holiday_ary').html(data)
+    holiday_json()
+  )
+
 jQuery ->
+  dateSetter()
   holiday_processor()
 
   $(document).on 'changeDate', '#form_start_date', ( ->
-    holiday_processor()
     dateSetter()
+    holiday_processor()
   )
 
   $('#direct_report_chooser').click ->
