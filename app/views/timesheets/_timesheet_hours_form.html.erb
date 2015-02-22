@@ -1,5 +1,6 @@
 <%= t_form.fields_for :timesheet_hours, @timesheet_hours do |th_form| %>
   <span class="hidden">
+    <%= th_form.hidden_field :id %>
     <%= th_form.hidden_field :timesheet_id %>
     <%= th_form.hidden_field :day_num, { value: th_form.index+1 } %>
   </span>

@@ -96,13 +96,13 @@ ActiveRecord::Schema.define(version: 20150215134320) do
   add_index "timesheet_hours", ["timesheet_id"], name: "index_timesheet_hours_on_timesheet", using: :btree
 
   create_table "timesheets", force: true do |t|
-    t.datetime "start_date"
-    t.datetime "end_date"
+    t.date     "start_date"
+    t.date     "end_date"
     t.integer  "user_id"
-    t.datetime "hours_approved"
-    t.datetime "timeoff_approved"
-    t.datetime "hours_reviewed"
-    t.datetime "timeoff_reviewed"
+    t.date     "hours_approved"
+    t.date     "timeoff_approved"
+    t.date     "hours_reviewed"
+    t.date     "timeoff_reviewed"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -110,9 +110,9 @@ ActiveRecord::Schema.define(version: 20150215134320) do
   create_table "users", force: true do |t|
     t.string   "fname"
     t.string   "lname"
-    t.boolean  "active"
-    t.datetime "start_date"
-    t.datetime "end_date"
+    t.boolean  "active",                                   default: true
+    t.date     "start_date"
+    t.date     "end_date"
     t.integer  "department_id"
     t.integer  "supervisor_id"
     t.string   "email"

@@ -95,7 +95,7 @@ class TimesheetsController < ApplicationController
 
     @human_start_date = start_date.strftime("%m/%d/%Y")
     @human_end_date = end_date.strftime("%m/%d/%Y")
-    
+
     @ruby_start_date = start_date.strftime("%Y/%m/%d")
     @ruby_end_date = end_date.strftime("%Y/%m/%d")
 
@@ -128,10 +128,25 @@ class TimesheetsController < ApplicationController
 
   def create
     @user = User.find(params[:user_id])
+    @start_date = Date.parse(params[:timesheet][:start_date])
 
     # If the timesheet already exists, update it
-    @timesheet = Timesheet.find_or_initialize_by_start_date_and_end_date(params[:timesheet][:start_date], params[:timesheet][:end_date])
-    @timesheet.update_attributes(timesheet_params)
+    @timesheet = Timesheet.find_or_initialize_by_start_date_and_user_id(@start_date, @user.id)
+
+    if @timesheet.new_record?
+      @timesheet.update_attributes(timesheet_params)
+    else
+      @timesheet.timesheet_hours.order(:day_num).each_with_index do |th, index|
+        th.hours = params['timesheet']['timesheet_hours_attributes'][index.to_s]['hours']
+        th.timeoff_hours = params['timesheet']['timesheet_hours_attributes'][index.to_s]['timeoff_hours']
+        th.save
+      end
+      @timesheet.timesheet_categories.order(:category_id).each_with_index do |tc, index|
+        tc.hours = params['timesheet']['timesheet_categories_attributes'][index.to_s]['hours']
+        tc.save
+      end
+    end
+
     if @timesheet.save
       flash[:success] = "Timesheet submitted"
       redirect_to session[:return_url]
