@@ -56,6 +56,9 @@ class UsersController < ApplicationController
 
     @salary_hider = ""
     @hourly_hider = "hidden"
+
+    @disabled = false
+    @readonly_shower = "readonly-shower"
   end
 
   def edit
@@ -71,10 +74,10 @@ class UsersController < ApplicationController
 
     if current_user.can_approve_this?(@user)
       @disabled = false
-      @readonly_disguiser = "readonly-disguiser"
+      @readonly_shower = "readonly-shower"
     else
       @disabled = true
-      @readonly_disguiser = ""
+      @readonly_shower = ""
     end
 
     @active_def = @user.active

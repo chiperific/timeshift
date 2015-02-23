@@ -26,7 +26,7 @@ class TimeoffController < ApplicationController
     @title = "Timeoff"
     @user = User.find(params[:user_id])
 
-    @timeoff_hours = TimesheetHour.where(user_id: @user.has_authority_over).where.not(timeoff_hours: 0).select('timesheet_id, user_id').group(:timesheet_id, :user_id).to_a
+    @timeoff_hours = Timesheet.where(user_id: @user.has_authority_over).includes(:timesheet_hours).where("timesheet_hours.timeoff_hours > 0").references(:timesheet_hours)
   end
 
   def admin

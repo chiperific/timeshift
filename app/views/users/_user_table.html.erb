@@ -74,6 +74,7 @@
           <th>Inactive</th>
           <th>Dept.</th>
           <th>Supervisor</th>
+          <th class="hidden-xs">Dates</th>
           <th></th>
         </tr>
       </thead>
@@ -81,7 +82,7 @@
         <% @inactive_users.each do |u| %>
           <% @inactive_super = @users.find_by( id: u.supervisor_id ) %>
           <tr>
-            <td><%= u.fname + " " + u.lname %></td>
+            <td><%= u.full_name %></td>
             <td>
               <% if u.department.nil? %>
                 (no department)
@@ -91,6 +92,9 @@
               
             </td>
             <td><%= @inactive_super.full_name %></td>
+            <td class="hidden-xs">
+              <%= u.start_date.strftime('%m/%d/%Y') + " - " + u.end_date_string %>
+            </td>
             <td><%= link_to FA_EDIT, edit_user_path(u.id), { method: :get, class: "btn btn-primary btn-sm"} %></td>
           </tr>
         <% end %>
