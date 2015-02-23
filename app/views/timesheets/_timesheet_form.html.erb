@@ -27,9 +27,29 @@
     </div>
   </div>
 
+    
+  <% if @timesheet.new_record? %>
+    <div class="row alert alert-danger well-adjusted" id="timesheet_overwrite_warning" role="alert">
+      <span class="hidden" id="timesheets_ary">
+          <%= @timesheets_json %>
+      </span>
+      <div class="text-right no-height">
+        <a href="#" id="dismiss_timesheet_overwrite_warning" class="btn btn-xs btn-danger">X</a>
+      </div>
+      <h3 class="no-margin-top">Warning!</h3>
+      <h4>The <u>start date</u> you've selected already has a submitted timesheet.</h4>
+      <p>If you proceed, you'll overwrite that timesheet with new data.</p>
+      <p>Otherwise, you can <a href="" id="timesheet_overwrite_link">go to the original timesheet</a>.</p>
+    </div>
+  <% end %>
+    
+
   <div class="row alert alert-success well-striped well-adjusted" id="holiday_reminder" role="alert">
     <span class="hidden" id="holiday_ary"></span>
-    <h3>Heads up!</h3>
+    <div class="text-right no-height">
+      <a href="#" id="dismiss_holiday_reminder" class="btn btn-xs btn-success">X</a>
+    </div>
+    <h3 class="no-margin-top">Heads up!</h3>
     <ul class="list-unstyled" id="holidays_in_period"></ul>
   </div>
 

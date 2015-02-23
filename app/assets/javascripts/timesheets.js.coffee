@@ -45,6 +45,7 @@ weekday_name = (n) ->
   day_name = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
   day_name[n]
 
+#adds the holidays between the date range as a "heads up"
 holiday_date_filter = (holiday) ->
   string_date = holiday["date"]
   string_date_w_time = string_date+" 12:00:00"
@@ -62,8 +63,9 @@ holiday_date_filter = (holiday) ->
 holiday_json = ->
   $('#holidays_in_period').html("")
   ary = $('#holiday_ary').html()
-  parsed = jQuery.parseJSON(ary)
-  holiday_date_filter holiday for holiday, i in parsed
+  if (typeof ary != 'undefined')
+    parsed = jQuery.parseJSON(ary)
+    holiday_date_filter holiday for holiday, i in parsed
 
   if $("#holidays_in_period li").length > 0
     $('#holiday_reminder').removeClass('hidden')
@@ -72,25 +74,46 @@ holiday_json = ->
 
 holiday_processor = ->
   start_string = $('input#ruby_start_date').val()
-  end_string = $('input#ruby_end_date').val()
   start_date = new Date(start_string)
-  end_date = new Date(end_string)
-
   year = start_date.getFullYear()
   $.ajax(url: '/holidays/'+year, type: 'get', success: (data)->
     $('span#holiday_ary').html(data)
     holiday_json()
   )
 
+# checks the timesheet_ary for an existing timesheet and un-hides a warning message about overwritting
+timesheet_date_filter = (timesheet) ->
+  start_date = timesheet["start_date"]
+  start_date_w_time = start_date+" 00:00:00"
+  timesheet_date = new Date(start_date_w_time)
+  form_date_string = $('input#ruby_start_date').val()
+  form_date = new Date(form_date_string)
+  timesheet_id = timesheet["id"]
+  new_href = timesheet_id+"/edit"
+  if form_date.getTime() == timesheet_date.getTime()
+    $('#timesheet_overwrite_warning').removeClass('hidden')
+    $('#timesheet_overwrite_link').attr("href", new_href)
+
+overwrite_processor = ->
+  $('#timesheet_overwrite_warning').addClass('hidden')
+  ary = $('#timesheets_ary').html()
+  if (typeof ary != 'undefined')
+    parsed = jQuery.parseJSON(ary)
+    timesheet_date_filter timesheet for timesheet, i in parsed
+  
+
 jQuery ->
   dateSetter()
   holiday_processor()
+  overwrite_processor()
 
   $(document).on 'changeDate', '#form_start_date', ( ->
     dateSetter()
     holiday_processor()
+    overwrite_processor()
   )
 
+  # timesheets supervisor and admin actions
   $('#direct_report_chooser').click ->
     direct_report = $('#direct_report_select option:selected').val()
     if direct_report == ""
@@ -107,6 +130,18 @@ jQuery ->
   $('#direct_report_select').change ->
     $('#direct_report_error').addClass('hidden')
 
+  # _timesheet_form.html.erb
+  $('#dismiss_timesheet_overwrite_warning').click ->
+    $('#timesheet_overwrite_warning').addClass('hidden')
+    event.preventDefault
+    false
+
+  $('#dismiss_holiday_reminder').click ->
+    $('#holiday_reminder').addClass('hidden')
+    event.preventDefault
+    false
+
+  # _timesheet_hours_form
   $('.timeoff-hide').hide()
   $('.timeoff-show').show()
   $('.expand-5-to-7').removeClass('col-xs-5').addClass('col-xs-7')
@@ -128,7 +163,7 @@ jQuery ->
     $(this).text( htmlString )
     event.preventDefault()
 
-  # _timesheet_hours_form.html.erb
+  # _timesheet_approval_form partial
   $('#review_select_tag').change ->
     if $(this).val() == "true"
       $('.reviewed-field').val(rubyReadyDate())
@@ -170,6 +205,7 @@ jQuery ->
   $('.timeoff-hours-field').bind 'click keyup', (event) ->
     calculateTotal('.timeoff-hours-field', '#ttl-timeoff-hours')
 
+  # timesheet tables in admin, single and supervisor views
   $('#timesheet-admin-table').dataTable
     columnDefs: [
       targets: -1, sortable: false, searchable: false

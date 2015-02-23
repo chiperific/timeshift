@@ -1,8 +1,5 @@
-# Place all the behaviors and hooks related to the matching controller here.
-# All this logic will automatically be available in application.js.
-# You can use CoffeeScript in this file: http://coffeescript.org/
 jQuery ->
-  #if $.inArray("users", pathAry) >= 0
+  # supervisor and admin views:
   $('#user-view-switch').click ->
     $('#inactive-users').toggleClass('hidden')
     if $(this).html() == "View inactive users"
@@ -32,7 +29,7 @@ jQuery ->
     event.preventDefault()
     false
 
-  # start and end date fields on show_form
+  # start and end date fields on user_form
   $('.date_field').datepicker
     todayBtn: "linked"
     todayHighlight: true

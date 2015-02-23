@@ -79,8 +79,6 @@ class TimesheetsController < ApplicationController
     @timeoff_hours_reviewed = ["Unreviewed", false]
     @timeoff_hours_approved = ["Unapproved", false]
 
-    @url = user_timesheets_path(@user.id)
-
     @timesheet_hours = weekday_ary
 
     @timesheet_categories = categories_ary
@@ -99,6 +97,9 @@ class TimesheetsController < ApplicationController
     @ruby_start_date = start_date.strftime("%Y/%m/%d")
     @ruby_end_date = end_date.strftime("%Y/%m/%d")
 
+    #for timesheet_finder timesheet_ary -- warns when overwritting an existing record
+    @timesheets_json = Timesheet.where(user_id: @user.id).select('id, start_date, user_id').to_json
+
   end
 
   def edit
@@ -106,16 +107,20 @@ class TimesheetsController < ApplicationController
     @user = User.find(params[:user_id])
     @timesheet = Timesheet.find(params[:id])
 
-    @start_date = @timesheet.start_date.strftime("%Y/%m/%d")
-    @end_date = @timesheet.end_date.strftime("%Y/%m/%d")
+    start_date = @timesheet.start_date
+    end_date = @timesheet.end_date
+
+    @human_start_date = start_date.strftime("%m/%d/%Y")
+    @human_end_date = end_date.strftime("%m/%d/%Y")
+
+    @ruby_start_date = start_date.strftime("%Y/%m/%d")
+    @ruby_end_date = end_date.strftime("%Y/%m/%d")
 
     @hours_approved = @timesheet.hours_approved.present?
     @hours_reviewed = @timesheet.hours_reviewed.present?
     @timeoff_hours_reviewed = @timesheet.timeoff_reviewed.present?
     @timeoff_hours_approved = @timesheet.timeoff_approved.present?
     
-    #@url = user_timesheet_path(@user.id, @timesheet.id)
-
     @timesheet_hours = weekday_ary
 
     @timesheet_categories = categories_ary
@@ -124,6 +129,9 @@ class TimesheetsController < ApplicationController
     @category_ttl = @timesheet.timesheet_categories.sum(:hours).to_f
 
     session[:return_url] = back_uri
+
+    #for timesheet_finder timesheet_ary -- warns when overwritting an existing record
+    @timesheets_json = Timesheet.where(user_id: @user.id).select('id, start_date, user_id').to_json
   end
 
   def create
