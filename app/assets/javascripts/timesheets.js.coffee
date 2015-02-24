@@ -207,21 +207,25 @@ jQuery ->
 
   # timesheet tables in admin, single and supervisor views
   $('#timesheet-admin-table').dataTable
+    order: [],
     columnDefs: [
       targets: -1, sortable: false, searchable: false
     ]
 
   $('#timesheet-over-table').dataTable
+    order: [],
     columnDefs: [
       targets: -1, sortable: false, searchable: false
     ]
 
   $('#timesheet-single-table').dataTable
+    order: []
     columnDefs: [
       targets: -1, sortable: false, searchable: false
     ]
 
   $('#timesheet-archive-table').dataTable
+    order: []
     columnDefs: [
       targets: -1, sortable: false, searchable: false
     ]

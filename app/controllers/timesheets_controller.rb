@@ -12,7 +12,7 @@ class TimesheetsController < ApplicationController
     else
       @page_title = "#{@user.fname}'s Timesheets"
     end
-    @timesheets = Timesheet.where(user_id: @user.id)
+    @timesheets = Timesheet.where(user_id: @user.id).order(:start_date)
   end
 
   def supervisor
@@ -28,7 +28,7 @@ class TimesheetsController < ApplicationController
       @user_id_ary = []
     end
 
-    @timesheets = Timesheet.where(hours_approved: nil, user_id: @user_id_ary)
+    @timesheets = Timesheet.where(hours_approved: nil, user_id: @user_id_ary).includes(:user).order('users.lname', 'users.fname').references(:users)
 
     @users_select = Hash.new
     @user_auth.each do |usr|
@@ -41,7 +41,7 @@ class TimesheetsController < ApplicationController
     @user = User.find(params[:user_id])
     @page_title = "All Timesheets"
 
-    @timesheets = Timesheet.where(hours_approved: nil)
+    @timesheets = Timesheet.where(hours_approved: nil).includes(:user).order('users.lname', 'users.fname').references(:users)
     @user_id_ary = User.all.map { |u| u.id }
     @users_select = Hash.new
     User.where(active: true).order(:lname).each do |usr|
@@ -54,7 +54,7 @@ class TimesheetsController < ApplicationController
     @user = User.find(params[:user_id])
     @page_title = "All Timesheets"
 
-    @timesheets = Timesheet.where.not(hours_approved: nil)
+    @timesheets = Timesheet.where.not(hours_approved: nil).includes(:user).order('users.lname', 'users.fname').references(:users)
     @user_id_ary = User.all.map { |u| u.id }
 
     @users_select = Hash.new
