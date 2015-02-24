@@ -58,14 +58,44 @@ class StaticPagesController < ApplicationController
     @title = "Payroll"
 
     @pay_period_type = PayPeriod.first.period_type
-    @payroll_start = payroll_start
-    @payroll_end = payroll_end
+    
+    if !params[:payroll_start]
+      case @pay_period_type
+      when "Weekly"
+        @payroll_start = Date.commercial(Date.today.year, Date.today.cweek, 1)
+        @payroll_end = @payroll_start + 6.days
+      when "Bi-weekly"
+        if Date.today.cweek.odd?
+          @payroll_start = Date.commercial(Date.today.year, Date.today.cweek, 1)
+        else
+          @payroll_start = Date.commercial(Date.today.year, Date.today.cweek - 1, 1)
+        end
+        @payroll_end = @payroll_start + 13.days
+      when "Monthly"
+        @payroll_start = Date.new(Date.today.year, Date.today.month, 1)
+        @payroll_end = Date.new(Date.today.year, Date.today.month, -1)
+      else #Annually or Semi-monthly
+        start_month = Date::MONTHNAMES.index(StartMonth.first.month)
+        @payroll_start = Date.new(Date.today.year, start_month, 1)
+        if pay_period_type == "Semi-monthly"
+          end_month = start_month + 5
+        else #Annually
+          end_month = start_month + 11
+        end
+        if end_month <= 12
+          @payroll_end = Date.new(Date.today.year, end_month, -1)
+        else
+          @payroll_end = Date.new(Date.today.year, end_month -12, -1)
+        end
+      end
+    else
+      @payroll_start = params[:payroll_start]
+      @payroll_end = params[:payroll_end]
+    end
 
     @departments_lkup = departments_lkup
     @users = payroll_relevant_users(@payroll_start, @payroll_end)
     @categories = payroll_active_cats
-    @pay_period = params[:pay_period] || Time.now.in_time_zone.strftime("%m-%d")
-    @year = params[:year] || Time.now.in_time_zone.year.to_s
   end
 
   def configure

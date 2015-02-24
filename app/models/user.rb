@@ -173,14 +173,9 @@ class User < ActiveRecord::Base
     options[period_type]
   end
 
-  def payroll_hours(start_date, end_date)
-    #get an array of cweeks and years
-    year = (start_date.year..end_date.year).map { |y| y }
-    cweek = (start_date..end_date).map { |d| d.cweek }.uniq
-
-    timesheet_ids = Timesheet.where(year: year, week_num: cweek).map { |t| t.id }
-    summed_hsh = self.timesheet_hours.where(timesheet_id: timesheet_ids).group(:timesheet_id).sum(:hours)
-    summed_hsh.map { |k, v| v.to_f }.sum
+  def payroll_hours(payroll_start, payroll_end)
+    timesheets = self.timesheets.where{ (start_date >= payroll_end) & (end_date >= payroll_start) } # thanks Squeel!!
+    if timesheets.any? then timesheets.timesheet_hours.sum(:hours) else 0 end
   end
 
   def payroll_rate
