@@ -12,8 +12,8 @@
 - Scaffold the favicons
 
 ### For WMRECC:
+- Payroll view needs work: switch year and pay_period to payroll_start && payroll_end, handle datePickers
 - Timeoff views: include accruals
-- Test all buttons from "Manage all timesheets" onward.
 - Run the test suite
 - Create the Category-by-user-hour view in payroll
 - Ditch the Date.fweek in application.rb?
