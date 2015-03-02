@@ -61,7 +61,7 @@ class CategoriesController < ApplicationController
       if c.hours > 0
         hours = number_with_precision(c.hours.round(2), precision: 2)
         rate = number_to_currency(c.timesheet.user.payroll_hourly_rate(payroll_start))
-        subttl = number_to_currency(c.hours.to_f * rate.to_f)
+        subttl = number_to_currency(c.hours.to_f * c.timesheet.user.payroll_hourly_rate(payroll_start).to_f)
         ary << { "staff"=> c.timesheet.user.full_name, "hours"=> hours, "rate"=> rate, "subttl"=> subttl }
       end
     end
