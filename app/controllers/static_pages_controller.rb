@@ -59,7 +59,7 @@ class StaticPagesController < ApplicationController
 
     @pay_period_type = PayPeriod.first.period_type
     
-    if !params[:payroll_start]
+    if !params[:date_start]
       case @pay_period_type
       when "Weekly"
         @payroll_start = Date.commercial(Date.today.year, Date.today.cweek, 1)
@@ -88,9 +88,13 @@ class StaticPagesController < ApplicationController
           @payroll_end = Date.new(Date.today.year, end_month -12, -1)
         end
       end
+      @date_start = @payroll_start.strftime("%m-%d-%Y")
+      @date_end = @payroll_end.strftime("%m-%d-%Y")
     else
-      @payroll_start = params[:payroll_start]
-      @payroll_end = params[:payroll_end]
+      @payroll_start = params[:date_start].gsub("-","/").to_date
+      @payroll_end = params[:date_end].gsub("-","/").to_date
+      @date_start = params[:date_start]
+      @date_end = params[:date_end]
     end
 
     @departments_lkup = departments_lkup

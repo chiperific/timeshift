@@ -29,11 +29,6 @@ jQuery ->
     event.preventDefault()
     false
 
-  # start and end date fields on user_form
-  $('.date_field').datepicker
-    todayBtn: "linked"
-    todayHighlight: true
-
   $('#users-table').dataTable
     ordering: false
     iDisplayLength: 50

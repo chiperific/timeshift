@@ -10,6 +10,7 @@ FA_SEARCH = "<i class='fa fa-search'></i> Search".html_safe
 FA_SUBMIT = "<i class='fa fa-check'></i> Submit".html_safe
 
 FA_CANCEL = "<i class='fa fa-times'></i> Cancel".html_safe
+FA_CLEAR = "<i class='fa fa-times'></i> Clear".html_safe
 
 FA_RIGHT = "<i class='fa fa-caret-right'></i>".html_safe
 FA_LEFT = "<i class='fa fa-caret-left'></i>".html_safe

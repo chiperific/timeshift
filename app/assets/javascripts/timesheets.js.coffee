@@ -229,12 +229,3 @@ jQuery ->
     columnDefs: [
       targets: -1, sortable: false, searchable: false
     ]
-
-
-  $('.date_picker').datepicker
-    daysOfWeekDisabled: "0,2,3,4,5,6"
-    todayBtn: "linked"
-    format: 'mm/dd/yyyy'
-    calendarWeeks: true
-    weekStart: 1
-    autoclose: true

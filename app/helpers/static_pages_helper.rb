@@ -27,6 +27,8 @@ module StaticPagesHelper
     self.current_user = nil
   end
 
+  ############## app_default methods
+
   def link_to_add_weekday(f)
     new_weekday = Weekday.new
     id = new_weekday.object_id

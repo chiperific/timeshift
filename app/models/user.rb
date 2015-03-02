@@ -174,8 +174,16 @@ class User < ActiveRecord::Base
   end
 
   def payroll_hours(payroll_start, payroll_end)
-    timesheets = self.timesheets.where{ (start_date >= payroll_end) & (end_date >= payroll_start) } # thanks Squeel!!
-    if timesheets.any? then timesheets.timesheet_hours.sum(:hours) else 0 end
+    timesheets = self.timesheets.where{ (start_date <= payroll_end) & (end_date >= payroll_start) } # thanks Squeel!!
+    if timesheets.any?
+      hours = []
+      timesheets.each do |t| 
+        hours << t.timesheet_hours.sum(:hours)
+      end
+      hours.inject(:+)
+    else 
+      0 
+    end
   end
 
   def payroll_rate
@@ -195,19 +203,18 @@ class User < ActiveRecord::Base
     rate.round(2)
   end
 
-  def payroll_hourly_rate(period, year)
+  def payroll_hourly_rate(start_date)
     if self.pay_type == "Hourly"
       if self.hourly_rate != nil
         rate = self.hourly_rate
       else
         rate = 0.0
       end
-    else
+    else #salary
       if self.salary_rate != nil
-        date = date_from_period_year(period, year)
         # Date.instance.business_days returns number of working days in year
         # business_days * 8 give working hours in year
-        working_hours = date.business_days_in_year * 8
+        working_hours = start_date.business_days_in_year * 8
         # divide working hours
         rate = self.salary_rate / working_hours
       else
