@@ -19,5 +19,4 @@
 -- timeoff views using period and year in user.rb, need to switch to start_date and end_date
 - Timeoff views: include accruals
 - Run the test suite
-- Create the Category-by-user-hour view in payroll
 - Ditch the Date.fweek in application.rb?
