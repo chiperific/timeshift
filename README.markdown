@@ -12,11 +12,12 @@ under the [MIT License](http://opensource.org/licenses/MIT)
 ### To do:
 1. Scaffold the favicons
 1. Send an email to the SV when a user submits a timesheet? 
-1.1 http://guides.rubyonrails.org/action_mailer_basics.html
+    http://guides.rubyonrails.org/action_mailer_basics.html
 
 ### For WMRECC:
 1. Run the test suite
 2. Merge the existing data:
+
     Users
     AppDefault children
     Timesheets (convert to start_date, end_date)
