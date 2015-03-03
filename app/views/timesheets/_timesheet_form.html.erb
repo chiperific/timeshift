@@ -11,7 +11,7 @@
       <p>Start date:</p>
       <div class="input-group">
         <span class="input-group-addon"><%= icon('calendar') %></span>
-        <%= text_field_tag "start_field", @human_start_date, { class: "form-control width-limiter #{if action_name != "edit" then "date_picker readonly-shower" end}", readonly: true, id: "form_start_date" } %>
+        <%= text_field_tag "start_field", @human_start_date, { class: "form-control width-limiter #{if action_name != "edit" then "start_date_picker readonly-shower" end}", readonly: true, id: "form_start_date" } %>
       </div>
       <%= t_form.hidden_field :start_date, { value: @ruby_start_date, id: "ruby_start_date" } %>
       <p id="date_warning" class="alert alert-warning width-limiter-14">Please select a Monday!</p>

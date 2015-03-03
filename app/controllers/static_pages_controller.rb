@@ -88,18 +88,17 @@ class StaticPagesController < ApplicationController
           @payroll_end = Date.new(Date.today.year, end_month -12, -1)
         end
       end
-      @date_start = @payroll_start.strftime("%m-%d-%Y")
-      @date_end = @payroll_end.strftime("%m-%d-%Y")
     else
-      @payroll_start = params[:date_start].gsub("-","/").to_date
-      @payroll_end = params[:date_end].gsub("-","/").to_date
-      @date_start = params[:date_start]
-      @date_end = params[:date_end]
+      @payroll_start = params[:date_start].to_date
+      @payroll_end = params[:date_end].to_date
     end
 
     @departments_lkup = departments_lkup
     @users = payroll_relevant_users(@payroll_start, @payroll_end)
     @categories = payroll_active_cats
+
+    @date_start = @payroll_start.strftime("%m/%d/%Y")
+    @date_end = @payroll_end.strftime("%m/%d/%Y")
   end
 
   def configure

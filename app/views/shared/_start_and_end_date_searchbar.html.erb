@@ -1,11 +1,11 @@
-<form accept-charset="UTF-8" method="get" >
+<form accept-charset="UTF-8" method="get" id="searchbar_form">
   <div class="row buffered-row-bottom">
     <div class="col-xs-6 col-sm-4 min-padding-both">
       <div class="input-group" title='Year'>
         <span class="input-group-addon">
           <%= icon('calendar') %>
         </span>
-        <input id="searchbar-calculator-year" name="date_start" type="integer" value="<%= @date_start %>" class="form-control start_date_picker" >
+        <input id="searchbar_start" name="date_start" type="integer" value="<%= @date_start %>" class="form-control start_date_picker" >
       </div>
     </div>
 
@@ -14,7 +14,7 @@
         <span class="input-group-addon">
           <%= icon('calendar') %>
         </span>
-        <input id="searchbar-calculator-pay-period" name="date_end" value="<%= @date_end %>" class="form-control end_date_picker" >
+        <input id="searchbar_end" name="date_end" value="<%= @date_end %>" class="form-control end_date_picker" >
       </div>
     </div>
 
