@@ -17,7 +17,7 @@ under the [MIT License](http://opensource.org/licenses/MIT)
 ### For WMRECC:
 1. Run the test suite
 2. Merge the existing data:
-2.1 Users
-2.2 AppDefault children
-2.3 Timesheets (convert to start_date, end_date)
-2.4 TimesheetHours && TimesheetCategories (remove user_id)
+    Users
+    AppDefault children
+    Timesheets (convert to start_date, end_date)
+    TimesheetHours && TimesheetCategories (remove user_id)
