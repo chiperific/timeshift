@@ -19,10 +19,10 @@
 2. Merge the existing data:
 
 <code><pre>
-    Users
-    AppDefault children
-    Timesheets (convert to start_date, end_date)
-    TimesheetHours && TimesheetCategories (remove user_id)
+Users
+AppDefault children
+Timesheets (convert to start_date, end_date)
+TimesheetHours && TimesheetCategories (remove user_id)
 </code></pre>
 
 3. Push the site live
