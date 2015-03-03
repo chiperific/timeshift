@@ -15,4 +15,3 @@
 ### For WMRECC:
 - find && replace datePicker classes with options in shared.js.coffee
 - Run the test suite
-- Fix the dataTables resizing and shut-off page reload on window size change
