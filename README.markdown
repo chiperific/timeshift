@@ -18,10 +18,10 @@
 1. Run the test suite
 2. Merge the existing data:
 
-<code><pre>Users
+<code>Users
 AppDefault children
 Timesheets (convert to start_date, end_date)
 TimesheetHours && TimesheetCategories (remove user_id)
-</code></pre>
+</code>
 
 3. Push the site live
