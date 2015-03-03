@@ -60,34 +60,8 @@ class StaticPagesController < ApplicationController
     @pay_period_type = PayPeriod.first.period_type
     
     if !params[:date_start]
-      case @pay_period_type
-      when "Weekly"
-        @payroll_start = Date.commercial(Date.today.year, Date.today.cweek, 1)
-        @payroll_end = @payroll_start + 6.days
-      when "Bi-weekly"
-        if Date.today.cweek.odd?
-          @payroll_start = Date.commercial(Date.today.year, Date.today.cweek, 1)
-        else
-          @payroll_start = Date.commercial(Date.today.year, Date.today.cweek - 1, 1)
-        end
-        @payroll_end = @payroll_start + 13.days
-      when "Monthly"
-        @payroll_start = Date.new(Date.today.year, Date.today.month, 1)
-        @payroll_end = Date.new(Date.today.year, Date.today.month, -1)
-      else #Annually or Semi-monthly
-        start_month = Date::MONTHNAMES.index(StartMonth.first.month)
-        @payroll_start = Date.new(Date.today.year, start_month, 1)
-        if pay_period_type == "Semi-monthly"
-          end_month = start_month + 5
-        else #Annually
-          end_month = start_month + 11
-        end
-        if end_month <= 12
-          @payroll_end = Date.new(Date.today.year, end_month, -1)
-        else
-          @payroll_end = Date.new(Date.today.year, end_month -12, -1)
-        end
-      end
+      @payroll_start = Date.today.start_of_period
+      @payroll_end = Date.today.end_of_period
     else
       @payroll_start = params[:date_start].to_date
       @payroll_end = params[:date_end].to_date

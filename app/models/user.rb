@@ -79,18 +79,8 @@ class User < ActiveRecord::Base
   end
 
   ############ methods for _timeoff_calculator
-  # turn 'mm-dd' and 'yyyy' into a date
-  def date_from_period_year(period, year)
-    m_d = period.split('-')
-    m = m_d[0].to_i
-    d = m_d[1].to_i
-    year = year.to_i
-    date = Date.new(year,m,d)
-  end
-
-  # return the amount of timeoff accumulated to this date based upon accrual_type
-  def timeoff_accumulated(period, year)
-    date = date_from_period_year(period, year)
+  # return the amount of timeoff accumulated to this date based upon accrual_type: ["Annual", "Weekly", "Bi-weekly"]
+  def timeoff_accumulated(date)
     if TimeoffAccrual.first.accrual_type == "Weekly"
       weekly = (self.annual_time_off / 52.0 ).to_f
       accumulated = (date.fweek * weekly).round(2)
@@ -103,7 +93,8 @@ class User < ActiveRecord::Base
     accumulated
   end
 
-  def timeoff_earned_per_period(period, year)
+  # accrual_type: ["Annual", "Weekly", "Bi-weekly"]
+  def timeoff_earned_per_period(date)
     date = date_from_period_year(period, year)
     if TimeoffAccrual.first.accrual_type == "Weekly"
       earned = ((self.annual_time_off / 52.0 ).to_f).round(2)
@@ -115,64 +106,71 @@ class User < ActiveRecord::Base
   end
 
   ############ methods for timeoff views
-  def timeoff_approved_by_year(year)
-    if year.class == String
-      year = year.to_i
-    end
-    self.timesheet_hours.joins(:timesheet).where( timesheets: { year: year}).where.not(timeoff_approved: nil).sum(:timeoff_hours).to_f
-  end
-
-  def timeoff_unapproved_by_year(year)
-    if year.class == String
-      year = year.to_i
-    end
-    self.timesheet_hours.joins(:timesheet).where( timesheets: { year: year}).where(timeoff_approved: nil).sum(:timeoff_hours).to_f
-  end
-
-  def timsheets_w_timeoff_unapproved_by_year(year)
-    if year.class == String
-      year = year.to_i
-    end
-    self.timesheet_hours.joins(:timesheet).where( timesheets: { year: year}).where(timeoff_approved: nil).group_by(&:timesheet_id).map { |a| a.id }.count
-  end
-
-  def timeoff_used_by_period(period, year)
-    date = date_from_period_year(period, year)
-    if date.fweek.even?
-      wk1 = (date - 7.days).fweek
-      wk2 = date.fweek
+  def timeoff_approved_by_year(date)
+    timesheets = self.timesheets.where("extract(year from start_date) = ?", date.year).where.not(timeoff_approved: nil)
+    if timesheets.any? 
+      ary = []
+      timesheets.each do |t|
+        ary << t.timesheet_hours.sum(:timeoff_hours).to_f
+      end
+      ary.sum
     else
-      wk1 = date.fweek
-      wk2 = (date + 7.days).fweek
+      0
     end
-    week_num_ary = [wk1, wk2]
-    self.timesheet_hours.joins(:timesheet).where.not(timeoff_approved: nil).where( timesheets: { year: year, week_num: week_num_ary}).sum(:timeoff_hours).to_f
   end
 
-  def timeoff_used_to_period(period, year)
-    date = date_from_period_year(period, year)
-    if date.fweek.even?
-      pay_period = (date - 7.days).fweek
+  def timeoff_unapproved_by_year(date)
+    timesheets = self.timesheets.where("extract(year from start_date) = ?", date.year).where(timeoff_approved: nil)
+    if timesheets.any? 
+      ary = []
+      timesheets.each do |t|
+        ary << t.timesheet_hours.sum(:timeoff_hours).to_f
+      end
+      ary.sum
     else
-      pay_period = date.fweek
+      0
     end
-    pay_period_ary = [1...pay_period]
-    self.timesheet_hours.joins(:timesheet).where.not(timeoff_approved: nil).where( timesheets: { year: year, week_num: pay_period_ary}).sum(:timeoff_hours).to_f
+  end
+
+  def timsheets_w_timeoff_unapproved_by_year(date)
+    timesheets = self.timesheets.where("extract(year from start_date) = ?", date.year).where(timeoff_approved: nil)
+    count = 0
+    timesheets.each do |t|
+      count =+ 1 unless t.timesheet_hours.sum(:timeoff_hours) == 0
+    end
+    count
+  end
+
+  def timeoff_used_by_period(date)
+    date_ary = [date.start_of_period..date.end_of_period]
+    timesheets = self.timesheets.where.not(timeoff_approved: nil).where( start_date: date_ary)
+    if timesheets.any? 
+      ary = []
+      timesheets.each do |t|
+        ary << t.timesheet_hours.sum(:timeoff_hours).to_f
+      end
+      ary.sum
+    else
+      0
+    end
+  end
+
+  def timeoff_used_to_period(date)
+    start_of_year = Date.new(date.year, 1, 1)
+    date_ary = [start_of_year..date.end_of_period]
+    timesheets = self.timesheets.where.not(timeoff_approved: nil).where( start_date: date_ary)
+    if timesheets.any? 
+      ary = []
+      timesheets.each do |t|
+        ary << t.timesheet_hours.sum(:timeoff_hours).to_f
+      end
+      ary.sum
+    else
+      0
+    end
   end
 
   ############ methods for payroll_users
-  def val_from_period_type
-    options = {
-      "Weekly" => 52,
-      "Bi-weekly" => 26,
-      "Semi-monthly" => 24,
-      "Monthly" => 12,
-      "Annually" => 1
-    }
-    period_type = PayPeriod.first.period_type
-    options[period_type]
-  end
-
   def payroll_hours(payroll_start, payroll_end)
     timesheets = self.timesheets.where{ (start_date <= payroll_end) & (end_date >= payroll_start) } # thanks Squeel!!
     if timesheets.any?
@@ -184,6 +182,19 @@ class User < ActiveRecord::Base
     else 
       0 
     end
+  end
+
+  # used to find payroll rate
+  def val_from_period_type
+    options = {
+      "Weekly" => 52,
+      "Bi-weekly" => 26,
+      "Semi-monthly" => 24,
+      "Monthly" => 12,
+      "Annually" => 1
+    }
+    period_type = PayPeriod.first.period_type
+    options[period_type]
   end
 
   def payroll_rate

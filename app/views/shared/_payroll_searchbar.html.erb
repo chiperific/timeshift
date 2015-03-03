@@ -1,4 +1,4 @@
-<form accept-charset="UTF-8" method="get" id="searchbar_form">
+<form accept-charset="UTF-8" method="get" id="payroll_searchbar_form">
   <div class="row buffered-row-bottom">
     <div class="col-xs-6 col-sm-4 min-padding-both">
       <div class="input-group" title='Year'>
@@ -30,15 +30,13 @@
   </div>
     
   <div class="row buffered-row-bottom">
-    <% if params[:action] == "payroll" %>
-      <div class="col-xs-12 min-padding-both">
-        <div class="input-group" title="Department">
-          <span class="input-group-addon">
-            <%= icon "sitemap" %>
-          </span>
-          <%= select_tag 'dept', options_for_select(@departments_lkup) , class: "form-control" %>
-        </div>
+    <div class="col-xs-12 min-padding-both">
+      <div class="input-group" title="Department">
+        <span class="input-group-addon">
+          <%= icon "sitemap" %>
+        </span>
+        <%= select_tag 'dept', options_for_select(@departments_lkup) , class: "form-control" %>
       </div>
-    <% end %>
+    </div>
   </div>
 </form>
