@@ -10,8 +10,13 @@
 
 ### To do:
 - Scaffold the favicons
-- Send an email to the SV when a user submits a timesheet? - http://guides.rubyonrails.org/action_mailer_basics.html
+- Send an email to the SV when a user submits a timesheet? 
+-- http://guides.rubyonrails.org/action_mailer_basics.html
 
 ### For WMRECC:
-- find && replace datePicker classes with options in shared.js.coffee
 - Run the test suite
+- Merge the existing data:
+-- Users
+-- AppDefault children
+-- Timesheets (convert to start_date, end_date)
+-- TimesheetHours && TimesheetCategories (remove user_id)
