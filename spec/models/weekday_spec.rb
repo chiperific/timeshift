@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe Weekday do
-  let!(:weekday) { FactoryGirl.create(:weekday) }
+RSpec.describe Weekday do
+  weekday = FactoryGirl.build_stubbed(:weekday)
   subject { weekday }
 
   it "has all the fields" do
@@ -24,7 +24,13 @@ describe Weekday do
   end
 
   describe "when name is actuall a day" do
-    before { weekday.name = "Saturday" }
+    before { 
+      weekday.name = "Saturday" 
+      weekday.abbr = "Sat"
+      weekday.day_num = 6
+      weekday.app_default_id = 1
+    }
+    
     it { should be_valid }
   end
 

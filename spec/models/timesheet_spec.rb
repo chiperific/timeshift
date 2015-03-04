@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe Timesheet do
-  let(:timesheet) { FactoryGirl.create(:timesheet)}
+RSpec.describe Timesheet do
+  timesheet = FactoryGirl.build(:timesheet)
 
   subject { timesheet }
 

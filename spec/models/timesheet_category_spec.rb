@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe TimesheetCategory do
-  let(:timesheet_category) { FactoryGirl.create(:timesheet_category)}
+RSpec.describe TimesheetCategory do
+  timesheet_category = FactoryGirl.build_stubbed(:timesheet_category)
 
   subject { timesheet_category }
 
@@ -16,7 +16,12 @@ describe TimesheetCategory do
   it { should be_valid }
 
   describe "when timesheet_id is not present" do
-    before { timesheet_category.timesheet_id = nil }
+    before { 
+      timesheet_category.timesheet_id = nil
+      timesheet_category.hours = 7
+      timesheet_category.category_id = 1
+    }
+
     it { should be_valid }
   end
 

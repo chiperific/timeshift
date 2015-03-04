@@ -1,7 +1,7 @@
 <%= form_for @user do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
   <span class="form-controller">
-
+    <%= f.hidden_field :id %>
     <div class="row">
       <div class="col-xs-6">
         <div class="input-group" title="First Name">

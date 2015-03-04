@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe TimesheetHour do
-  let(:timesheet_hour) { FactoryGirl.create(:timesheet_hour)}
+RSpec.describe TimesheetHour do
+  timesheet_hour = FactoryGirl.build_stubbed(:timesheet_hour)
 
   subject { timesheet_hour }
 
@@ -12,11 +12,6 @@ describe TimesheetHour do
     should respond_to(:timeoff_hours)
     should respond_to(:created_at)
     should respond_to(:updated_at)
-  end
-
-  describe "when timesheet_id is not present" do
-    before { timesheet_hour.timesheet_id = nil }
-    it { should be_valid }
   end
 
   describe "when day_num" do

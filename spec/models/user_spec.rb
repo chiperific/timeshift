@@ -1,7 +1,8 @@
 require 'spec_helper'
 
-describe User do
-  let!(:user) { FactoryGirl.create(:user) }
+RSpec.describe User do
+  user = FactoryGirl.build_stubbed(:user)
+  let(:saveable_user) { User.new(fname: "Saveable", lname: "User", start_date: Date.today(), email: "saveable@user.com", password: "foobar", password_confirmation: "foobar") }
 
   subject { user }
 
@@ -51,6 +52,14 @@ describe User do
     it { should_not be_valid }
   end
 
+  describe "when email address is already taken" do
+    let(:dup_user) { User.new(fname: "Duplicate", lname: "Email", email: "default@admin.com", password: "foobar", password_confirmation: "foobar") }
+
+    subject { dup_user }
+
+    it { should_not be_valid }
+  end
+
   describe "when email format is invalid" do
     it "should be invalid" do
       addresses = %w[user@foo,com user_at_foo.org example.user@foo.
@@ -67,17 +76,15 @@ describe User do
       addresses = %w[user@foo.COM A_US-ER@f.b.org frst.lst@foo.jp a+b@baz.cn]
       addresses.each do |valid_address|
         user.email = valid_address
+        user.fname = "Factory"
+        user.lname = "User"
+        user.start_date = Date.today
+        user.password = "defadmin1"
+        user.password_confirmation = "defadmin1"
+        user.time_zone = "Eastern Time (US & Canada)"
         expect(user).to be_valid
       end
     end
-  end
-
-  describe "when email address is already taken" do
-    let(:dup_user) { User.new(fname: "Duplicate", lname: "Email", email: user.email, password: "foobar", password_confirmation: "foobar") }
-
-    subject { dup_user }
-
-    it { should_not be_valid }
   end
 
   describe "when password is not present" do
@@ -105,12 +112,13 @@ describe User do
   end
 
   describe "email address with mixed case" do
+    subject { saveable_user }
     let(:mixed_case_email) { "Foo@ExAMPle.CoM" }
 
     it "should be saved as all lower-case" do
-      user.email = mixed_case_email
-      user.save
-      expect(user.reload.email).to eq mixed_case_email.downcase
+      saveable_user.email = mixed_case_email
+      saveable_user.save
+      expect(saveable_user.reload.email).to eq mixed_case_email.downcase
     end
   end
 
@@ -121,24 +129,25 @@ describe User do
   end
 
   describe "return value of authenticate method" do
-    before { user.save }
-    let(:found_user) { User.find_by(email: user.email) }
+    subject { saveable_user }
+    before { saveable_user.save }
+    let(:found_user) { User.find_by(email: saveable_user.email) }
 
     describe "with valid password" do
-      it { should eq found_user.authenticate(user.password) }
+      subject { saveable_user.fname }
+      it { should eq found_user.authenticate(saveable_user.password).fname }
     end
 
     describe "with invalid password" do
       let(:user_for_invalid_password) { found_user.authenticate("invalid") }
-
+      subject { found_user }
       it { should_not eq user_for_invalid_password }
-      specify { expect(user_for_invalid_password).to be_false }
     end
 
-    describe "remember token" do
-      before { user.save }
-      its(:remember_token) { should_not be_blank }
-    end
+    # describe "remember token" do
+    #   before { saveable_user.save }
+    #   its(:remember_token) { should_not be_blank }
+    # end
   end #return val of auth method
 end
 
