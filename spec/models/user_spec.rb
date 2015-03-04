@@ -9,23 +9,24 @@ describe User do
     should respond_to(:fname)
     should respond_to(:lname)
     should respond_to(:active)
+    should respond_to(:start_date)
+    should respond_to(:end_date)
     should respond_to(:department_id)
     should respond_to(:supervisor_id)
     should respond_to(:email)
     should respond_to(:password_digest)
-    should respond_to(:password)
-    should respond_to(:password_confirmation)
-    should respond_to(:created_at)
-    should respond_to(:updated_at)
-    should respond_to(:remember_token)
+    should respond_to(:admin)
     should respond_to(:annual_time_off)
     should respond_to(:standard_hours)
     should respond_to(:salary_rate)
     should respond_to(:hourly_rate)
     should respond_to(:pay_type)
     should respond_to(:time_zone)
-    should respond_to(:start_date)
-    should respond_to(:end_date)
+    should respond_to(:remember_token)
+    should respond_to(:created_at)
+    should respond_to(:updated_at)
+    should respond_to(:password)
+    should respond_to(:password_confirmation)
   end
 
   it { should be_valid }
@@ -37,6 +38,11 @@ describe User do
 
   describe "when lname is not present" do
     before { user.lname = " " }
+    it { should_not be_valid }
+  end
+
+  describe "when start_date is not present" do
+    before { user.start_date = nil }
     it { should_not be_valid }
   end
 

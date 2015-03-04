@@ -8,6 +8,7 @@ describe Weekday do
     should respond_to :name
     should respond_to :abbr
     should respond_to :app_default_id
+    should respond_to :day_num
   end
 
   it { should be_valid }
@@ -34,6 +35,11 @@ describe Weekday do
 
   describe "when app_default_id is not present" do
     before { weekday.app_default_id = nil }
+    it { should_not be_valid }
+  end
+
+  describe "when day_num is not present" do 
+    before { weekday.day_num = nil }
     it { should_not be_valid }
   end
 

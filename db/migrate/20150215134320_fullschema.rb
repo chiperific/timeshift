@@ -16,7 +16,7 @@ class Fullschema < ActiveRecord::Migration
       t.decimal  "standard_hours",  precision: 6,  scale: 2, default: 40.0
       t.decimal  "salary_rate",     precision: 10, scale: 2
       t.decimal  "hourly_rate",     precision: 6,  scale: 2
-      t.string  "pay_type",                                  default: "Salary"
+      t.string   "pay_type",                                 default: "Salary"
       t.string   "time_zone",                                default: "Eastern Time (US & Canada)"
       t.string   "remember_token"
       t.datetime "created_at"
