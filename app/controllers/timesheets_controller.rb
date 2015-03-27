@@ -72,6 +72,7 @@ class TimesheetsController < ApplicationController
   def new
     @title = "New Timesheet"
     @user = User.find(params[:user_id])
+
     @timesheet = Timesheet.new
 
     @hours_reviewed = ["Unreviewed", false]
@@ -87,6 +88,11 @@ class TimesheetsController < ApplicationController
 
     @hours_ttl = 0.0
     @category_ttl = 0.0
+    if @user.standard_hours == 0
+      @standard_hours = 40
+    else
+      @standard_hours = @user.standard_hours.to_f
+    end
 
     start_date = Date.commercial(Date.today.year, Date.today.cweek, 1)
     end_date = Date.commercial(Date.today.year, Date.today.cweek, 7)
@@ -127,6 +133,11 @@ class TimesheetsController < ApplicationController
 
     @hours_ttl = @timesheet.timesheet_hours.sum(:hours).to_f
     @category_ttl = @timesheet.timesheet_categories.sum(:hours).to_f
+    if @user.standard_hours == 0
+      @standard_hours = 40
+    else
+      @standard_hours = @user.standard_hours.to_f
+    end
 
     session[:return_url] = back_uri
 

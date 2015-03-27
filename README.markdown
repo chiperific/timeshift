@@ -23,4 +23,7 @@
         Timesheets (convert to start_date, end_date)
         TimesheetHours && TimesheetCategories (remove user_id)
 
+        Timesheet seeds contain duplicates?
+        TimesheetCategory needs transfer
+
 3. Push the site live
